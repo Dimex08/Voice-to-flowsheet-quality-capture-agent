@@ -1,0 +1,14 @@
+[
+  {
+    "id": "fall_clean",
+    "label": "Post-fall neuro check — Room 422",
+    "text": "Post-fall assessment, room 422, twenty-one fifteen. Patient found sitting on the floor beside the bed, denies hitting her head, no visible trauma. Eyes are open spontaneously — she was looking at me when I walked in. She's answering all my questions appropriately. Knows her name, knows she's in the hospital, knows it's July. Fully oriented. Follows commands — squeezed both my hands on request, wiggled her toes. So eyes four, verbal five, motor six. Glasgow fifteen. Pupils equal, 4 millimeters, brisk both sides. Face symmetric. Speech clear. Strength equal and strong, all four extremities. No seizure activity. Will continue neuro checks per fall protocol.",
+    "stated_gcs_total": 15
+  },
+  {
+    "id": "arousal_ambiguous",
+    "label": "Ambiguous arousal — Room 418",
+    "text": "Neuro check, room 418, oh-two-hundred. She was pretty drowsy when I came in. Eyes were closed — I said her name and she opened them, though honestly she may have been starting to wake up on her own around then, hard to say. Speech was a little thick but she told me her name. Didn't quite track the date. Moved her right arm to my hand but the left just kind of pulled back. Pupils three millimeters, equal, react. No facial droop that I could see. No seizures.",
+    "stated_gcs_total": null
+  }
+]

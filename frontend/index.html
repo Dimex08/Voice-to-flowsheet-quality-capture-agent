@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MedChart Pro — Neuro Flowsheet</title>
+<link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+  <div class="titlebar">
+    <span class="app-name">MedChart Pro — Neuro Flowsheet</span>
+    <span class="room" id="room-label">Room 422 · Post-fall assessment</span>
+    <span class="badge-mode" id="mode-badge">—</span>
+  </div>
+
+  <div class="toolbar">
+    <span class="toolbar-title">Nursing Flowsheet</span>
+    <span class="hint">Dropdowns are fully editable by hand — this is the legacy chart. The panel on the right fills them from a narration.</span>
+  </div>
+
+  <div class="main">
+    <section class="chart-panel">
+      <table class="flowsheet" id="flowsheet-table" aria-label="Neuro flowsheet">
+        <thead>
+          <tr><th style="width:42%">Field</th><th>Charted value</th></tr>
+        </thead>
+        <tbody id="flowsheet-body"></tbody>
+      </table>
+      <div class="gcs-total-bar" id="gcs-total-bar">
+        <span class="gcs-total-label">Glasgow Coma Total</span>
+        <span class="gcs-total-value" id="gcs-total-value">—</span>
+        <span class="gcs-total-note" id="gcs-total-note"></span>
+      </div>
+    </section>
+
+    <aside class="agent-panel">
+      <div class="card narration-card">
+        <h3>Narration → flowsheet agent</h3>
+        <label class="scenario-row">
+          <span>Sample narration</span>
+          <select id="scenario-select" class="win"></select>
+        </label>
+        <textarea id="narration-text" spellcheck="false"
+          placeholder="Paste or dictate the nurse's narration here…"></textarea>
+        <div class="narration-actions">
+          <span class="mode-note" id="mode-note"></span>
+          <button id="fill-btn" class="primary-btn">Fill flowsheet →</button>
+        </div>
+      </div>
+
+      <div class="card eval-card" id="eval-card" hidden>
+        <h3>Documentation quality</h3>
+        <div class="eval-meta">Completeness · Correctness · Currency —
+          <a href="https://pubmed.ncbi.nlm.nih.gov/37740937/" target="_blank" rel="noopener">framework ref ↗</a></div>
+
+        <div class="meter-row">
+          <div class="meter-label"><span class="name">Completeness</span><span class="val" id="val-completeness">—</span></div>
+          <div class="meter-track"><div class="meter-fill" id="fill-completeness"></div></div>
+        </div>
+        <div class="meter-row">
+          <div class="meter-label"><span class="name">Correctness</span><span class="val" id="val-correctness">—</span></div>
+          <div class="meter-track"><div class="meter-fill" id="fill-correctness"></div></div>
+        </div>
+        <div class="meter-row">
+          <div class="meter-label"><span class="name">Currency</span><span class="val" id="val-currency">—</span></div>
+          <div class="meter-track"><div class="meter-fill" id="fill-currency"></div></div>
+        </div>
+        <div class="eval-summary" id="eval-summary"></div>
+      </div>
+
+      <div class="card checks-card" id="checks-card" hidden>
+        <h3>Adversarial checks &amp; flags</h3>
+        <div id="consistency-list"></div>
+        <div id="flags-list"></div>
+      </div>
+    </aside>
+  </div>
+
+  <script src="/static/app.js"></script>
+</body>
+</html>
