@@ -54,9 +54,11 @@
         sel.appendChild(opt);
       });
       sel.addEventListener("change", () => {
-        // A manual edit clears the agent's provenance note for that field.
+        // A manual edit clears the agent's provenance/trace for that field.
         el(`meta-${f.id}`).textContent = "";
-        valueTd.classList.remove("charted", "flagged");
+        valueTd.classList.remove("charted", "flagged", "traceable");
+        valueTd.onclick = null;
+        delete valueTd.dataset.quote;
         recomputeGcsTotal();
       });
 
@@ -117,8 +119,13 @@
     FIELDS.forEach(f => {
       el(`field-${f.id}`).value = "";
       el(`meta-${f.id}`).textContent = "";
-      el(`cell-${f.id}`).classList.remove("charted", "flagged");
+      const cell = el(`cell-${f.id}`);
+      cell.classList.remove("charted", "flagged", "traceable");
+      cell.onclick = null;
+      delete cell.dataset.quote;
     });
+    el("traced-wrap").hidden = true;
+    el("traced-narration").innerHTML = "";
     recomputeGcsTotal();
   }
 
@@ -167,20 +174,41 @@
     setTimeout(() => {
       (data.flags || []).forEach(applyFlag);
       renderChecks(data.consistency || [], data.flags || []);
+      renderTracedNarration(el("narration-text").value, updates);
       if (data.eval) renderEval(data.eval);
       btn.disabled = false;
       btn.textContent = "Fill flowsheet →";
     }, 120 * updates.length + 60);
   }
 
+  function confBand(c) {
+    return c >= 0.9 ? "high" : c >= 0.75 ? "med" : "low";
+  }
+
   function applyUpdate(u) {
     const sel = el(`field-${u.field_id}`);
+    const cell = el(`cell-${u.field_id}`);
     if (!sel) return;
     sel.value = u.value;
-    el(`cell-${u.field_id}`).classList.add("charted");
-    el(`cell-${u.field_id}`).classList.remove("flagged");
-    el(`meta-${u.field_id}`).textContent =
-      `agent · ${Math.round(u.confidence * 100)}% · "${u.quote}"`;
+    cell.classList.add("charted");
+    cell.classList.remove("flagged");
+    cell.dataset.quote = u.quote || "";
+
+    // Source citation: a confidence traffic-light dot + the exact words charted.
+    const meta = el(`meta-${u.field_id}`);
+    meta.innerHTML =
+      `<span class="conf-dot ${confBand(u.confidence)}" ` +
+      `title="agent confidence ${Math.round(u.confidence * 100)}%"></span>` +
+      `<span class="src">traced from &ldquo;${escHtml(u.quote || "")}&rdquo;</span>`;
+
+    // Click the field → locate its source words in the narration.
+    if (u.quote) {
+      cell.classList.add("traceable");
+      cell.onclick = ev => {
+        if (ev.target.tagName === "SELECT") return; // don't hijack the dropdown
+        highlightTrace(u.field_id);
+      };
+    }
     if (GCS_FIELDS.includes(u.field_id)) recomputeGcsTotal();
   }
 
@@ -190,6 +218,58 @@
     cell.classList.add("flagged");
     cell.classList.remove("charted");
     el(`meta-${f.field_id}`).textContent = "⚑ left blank — needs confirmation";
+  }
+
+  // ---------- traceability ----------
+  function escHtml(s) {
+    return s.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  // Render the narration read-only with each field's source phrase highlighted,
+  // so the nurse sees exactly which words became chart entries (and which didn't).
+  function renderTracedNarration(text, updates) {
+    const ranges = [];
+    updates.forEach(u => {
+      const q = (u.quote || "").trim();
+      if (!q) return;
+      const idx = text.toLowerCase().indexOf(q.toLowerCase());
+      if (idx === -1) return; // quote not a verbatim span — citation under the field still covers it
+      ranges.push({ start: idx, end: idx + q.length, field: u.field_id });
+    });
+    ranges.sort((a, b) => a.start - b.start || b.end - a.end);
+
+    const merged = [];
+    ranges.forEach(r => {
+      const last = merged[merged.length - 1];
+      if (last && r.start === last.start && r.end === last.end) {
+        last.fields.push(r.field);              // two fields, same words (e.g. BP systolic/diastolic)
+      } else if (last && r.start < last.end) {
+        /* overlaps a prior span — skip to avoid nested marks */
+      } else {
+        merged.push({ start: r.start, end: r.end, fields: [r.field] });
+      }
+    });
+
+    let html = "", cursor = 0;
+    merged.forEach(m => {
+      html += escHtml(text.slice(cursor, m.start));
+      html += `<mark class="trace" data-fields="${m.fields.join(" ")}">` +
+              `${escHtml(text.slice(m.start, m.end))}</mark>`;
+      cursor = m.end;
+    });
+    html += escHtml(text.slice(cursor));
+
+    el("traced-narration").innerHTML = html;
+    el("traced-wrap").hidden = merged.length === 0;
+  }
+
+  function highlightTrace(fieldId) {
+    const marks = document.querySelectorAll(`#traced-narration mark[data-fields~="${fieldId}"]`);
+    if (!marks.length) return;
+    document.querySelectorAll("#traced-narration mark.active")
+      .forEach(m => m.classList.remove("active"));
+    marks.forEach(m => m.classList.add("active"));
+    marks[0].scrollIntoView({ behavior: "smooth", block: "center" });
   }
 
   function renderChecks(consistency, flags) {

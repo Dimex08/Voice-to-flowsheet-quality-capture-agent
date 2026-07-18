@@ -58,10 +58,20 @@ td.field-value select {
 td.field-value.charted select { background: #eaffea; border-color: #2e7d32; }
 td.field-value.flagged select { background: #fff2e0; border-color: #b26a00; }
 .field-meta {
-  display: block; font-size: 9.5px; color: #555; margin-top: 2px;
-  font-family: ui-monospace, "SF Mono", monospace; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  display: flex; align-items: baseline; gap: 5px; font-size: 10px; color: #555; margin-top: 3px;
+  font-family: Tahoma, Verdana, sans-serif; line-height: 1.35;
 }
-td.field-value.flagged .field-meta { color: #a04b00; font-family: Tahoma, Verdana, sans-serif; }
+.field-meta .src { color: #3a5a3a; font-style: italic; }
+td.field-value.flagged .field-meta { color: #a04b00; }
+/* confidence traffic light */
+.conf-dot { flex: 0 0 auto; width: 8px; height: 8px; border-radius: 50%; margin-top: 3px; }
+.conf-dot.high { background: #2e9e2e; }
+.conf-dot.med  { background: #e0a400; }
+.conf-dot.low  { background: #c0392b; }
+/* a charted field is clickable to trace its source */
+td.field-value.traceable { cursor: pointer; }
+td.field-value.traceable:hover { background: #f0fff0; }
+td.field-value.traceable .src { text-decoration: underline dotted #7fae7f; }
 
 /* GCS total bar */
 .gcs-total-bar {
@@ -96,6 +106,23 @@ td.field-value.flagged .field-meta { color: #a04b00; font-family: Tahoma, Verdan
 }
 #narration-text:focus { outline: 2px solid #2a6f63; border-color: #2a6f63; }
 .narration-actions { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
+
+/* traceability view */
+#traced-wrap { margin-top: 12px; border-top: 1px solid #22303c; padding-top: 10px; }
+.traced-label { font-size: 10.5px; color: #6f8189; margin-bottom: 7px; font-family: system-ui, sans-serif; line-height: 1.4; }
+#traced-narration {
+  font-size: 12.5px; line-height: 1.7; color: #8fa3ab; font-family: ui-monospace, "SF Mono", monospace;
+  background: #0a1015; border: 1px solid #22303c; border-radius: 8px; padding: 10px 12px;
+  max-height: 190px; overflow-y: auto; white-space: pre-wrap;
+}
+#traced-narration mark.trace {
+  background: #14332b; color: #cfeee2; border-radius: 3px; padding: 1px 2px;
+  transition: background 160ms ease, color 160ms ease;
+}
+#traced-narration mark.trace.active {
+  background: #37cda8; color: #06231c; font-weight: 600;
+  box-shadow: 0 0 0 2px rgba(55,205,168,0.35);
+}
 .mode-note { font-size: 11px; color: #d0a94a; flex: 1; font-family: system-ui, sans-serif; }
 .primary-btn {
   margin-left: auto; background: #1f7a63; color: #eafff7; border: 1px solid #2fa588;

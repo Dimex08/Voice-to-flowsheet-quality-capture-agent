@@ -15,8 +15,8 @@
   </div>
 
   <div class="toolbar">
-    <span class="toolbar-title">Nursing Flowsheet</span>
-    <span class="hint">Dropdowns are fully editable by hand — this is the legacy chart. The panel on the right fills them from a narration.</span>
+    <span class="toolbar-title">Review — will be written to the EHR flowsheet</span>
+    <span class="hint">Dropdowns match the legacy chart and stay editable by hand. The nurse confirms here; confirmed values are written back to the EHR via FHIR. The panel on the right fills them from a narration and shows where each value came from.</span>
   </div>
 
   <div class="main">
@@ -46,6 +46,11 @@
         <div class="narration-actions">
           <span class="mode-note" id="mode-note"></span>
           <button id="fill-btn" class="primary-btn">Fill flowsheet →</button>
+        </div>
+
+        <div id="traced-wrap" hidden>
+          <div class="traced-label">Traceability — click any charted field to see the exact words it came from. Un-highlighted text was not used.</div>
+          <div id="traced-narration" aria-live="polite"></div>
         </div>
       </div>
 
