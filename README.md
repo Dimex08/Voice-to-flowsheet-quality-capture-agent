@@ -14,6 +14,18 @@ Evidence suggests that electronic health record (EHR) user interface features in
 
 This system aims to reduce documentation burden by using voice-based capture of clinical information and mapping that information to the appropriate flowsheet assessment. In addition, it will track data quality measures so that the capture process can be improved over time.
 
+## Where it fits in the clinical workflow
+
+The system inserts at the **gap between assessment and documentation** at the bedside — the point where clinical information is most accurate but least likely to be captured in real time.
+
+**When it's used.** Bedside nursing assessments that map to structured flowsheet fields: shift head-to-toe assessments, scheduled reassessments, and event-driven checks. Serial neuro checks are a concrete high-frequency example — a fall or stroke protocol can require a full Glasgow Coma Scale, pupil, and motor exam repeated every 15–60 minutes, each one currently reconstructed from memory once the nurse reaches a workstation.
+
+**The gap today.** During a hands-on assessment the nurse usually cannot chart in the moment — hands are occupied, attention is on the patient, and a terminal isn't always within reach. The observations are held in memory or jotted on a scrap note, then batch-entered at the nursing station minutes to hours later. That delay is what degrades the **completeness, correctness, and currency** of the record.
+
+**Where this agent sits.** The nurse narrates during or immediately after the assessment. The agent maps that speech onto the discrete flowsheet fields and surfaces it for the nurse to review — **human-in-the-loop by design: the agent proposes, the nurse confirms, edits, or overrides before anything is committed.** It never charts silently. Where the narration is ambiguous, the agent leaves the field blank and drafts the specific question the nurse (or a downstream data manager) needs to resolve, so review effort is focused exactly where it's needed. Because every field stays a manually editable dropdown, the agent layers on top of the existing legacy flowsheet rather than replacing it.
+
+**What it feeds downstream.** Structured flowsheet data drives shift handoff (e.g. SBAR), early-warning scores (e.g. NEWS/MEWS), protocol compliance (fall, stroke, sepsis bundles), and quality and regulatory reporting. Each of those is only as reliable as the flowsheet's completeness, correctness, and currency — which is why capturing the data earlier *and* monitoring its quality both matter.
+
 ## Goals
 
 - Improve nursing workflow efficiency at the bedside
