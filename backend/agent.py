@@ -157,6 +157,27 @@ _MOCK_BY_SCENARIO = {
         ],
         "stated_gcs_total": None,
     },
+    "stroke_nihss": {
+        "updates": [
+            {"field_id": "nihss_1a_loc", "value": "0", "confidence": 0.95, "quote": "She's alert and answering"},
+            {"field_id": "nihss_1b_questions", "value": "0", "confidence": 0.95, "quote": "She told me the month and her age, both correct"},
+            {"field_id": "nihss_1c_commands", "value": "0", "confidence": 0.94, "quote": "opens and closes her eyes on command and grips and releases my hand on command"},
+            {"field_id": "nihss_2_gaze", "value": "1", "confidence": 0.9, "quote": "partial gaze palsy"},
+            {"field_id": "nihss_3_visual", "value": "2", "confidence": 0.9, "quote": "complete left homonymous hemianopia"},
+            {"field_id": "nihss_4_facial", "value": "2", "confidence": 0.88, "quote": "left lower facial droop, partial paralysis"},
+            {"field_id": "nihss_5a_arm_l", "value": "1", "confidence": 0.87, "quote": "Her left arm drifts down before ten seconds"},
+            {"field_id": "nihss_5b_arm_r", "value": "0", "confidence": 0.93, "quote": "The right arm holds with no drift"},
+            {"field_id": "nihss_6a_leg_l", "value": "2", "confidence": 0.85, "quote": "left leg has some effort against gravity but drops to the bed"},
+            {"field_id": "nihss_6b_leg_r", "value": "0", "confidence": 0.92, "quote": "The right leg holds"},
+            {"field_id": "nihss_7_ataxia", "value": "0", "confidence": 0.92, "quote": "No limb ataxia"},
+            {"field_id": "nihss_8_sensory", "value": "1", "confidence": 0.86, "quote": "Decreased sensation on the left to pinprick, mild to moderate"},
+            {"field_id": "nihss_9_language", "value": "1", "confidence": 0.85, "quote": "mild expressive aphasia"},
+            {"field_id": "nihss_10_dysarthria", "value": "1", "confidence": 0.85, "quote": "Her speech is mildly slurred, dysarthria is present but intelligible"},
+            {"field_id": "nihss_11_extinction", "value": "1", "confidence": 0.86, "quote": "clear left-sided inattention"},
+        ],
+        "flags": [],
+        "stated_gcs_total": None,
+    },
 }
 
 

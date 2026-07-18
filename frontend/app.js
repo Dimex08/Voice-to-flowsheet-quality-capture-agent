@@ -5,6 +5,7 @@
 
   const el = id => document.getElementById(id);
   const GCS_FIELDS = ["gcs_eye", "gcs_verbal", "gcs_motor"];
+  let NIHSS_FIELDS = [];  // populated from the field registry in boot()
 
   async function boot() {
     [FIELDS, SCENARIOS] = await Promise.all([
@@ -12,9 +13,69 @@
       fetch("/api/scenarios").then(r => r.json()),
     ]);
     fieldsById = Object.fromEntries(FIELDS.map(f => [f.id, f]));
+    NIHSS_FIELDS = FIELDS.filter(f => f.id.startsWith("nihss_")).map(f => f.id);
     renderTable();
     renderScenarios();
-    recomputeGcsTotal();
+    recomputeTotals();
+    initDictation();
+  }
+
+  // ---------- live dictation (browser Web Speech API — no backend/STT install) ----------
+  // Note: in Chrome this streams audio to Google for transcription; a real
+  // deployment would swap in a HIPAA-eligible STT. Imperfect transcripts are
+  // fine — the agent's traceability and flag-don't-guess handle them.
+  let recognition = null, dictating = false, baseText = "", finalTranscript = "";
+
+  function initDictation() {
+    const btn = el("dictate-btn");
+    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SR) {
+      btn.disabled = true;
+      btn.textContent = "🎤 Dictation needs Chrome";
+      btn.title = "The browser Web Speech API is available in Chrome and Edge.";
+      return;
+    }
+    recognition = new SR();
+    recognition.continuous = true;
+    recognition.interimResults = true;
+    recognition.lang = "en-US";
+
+    recognition.onresult = e => {
+      let interim = "";
+      for (let i = e.resultIndex; i < e.results.length; i++) {
+        const t = e.results[i][0].transcript;
+        if (e.results[i].isFinal) finalTranscript += t;
+        else interim += t;
+      }
+      const spoken = (finalTranscript + interim).trim();
+      el("narration-text").value = baseText ? `${baseText} ${spoken}`.trim() : spoken;
+    };
+    recognition.onend = () => { if (dictating) recognition.start(); }; // keep going until stopped
+    recognition.onerror = ev => {
+      if (ev.error === "not-allowed" || ev.error === "service-not-allowed") {
+        el("mode-note").textContent = "Microphone access denied — allow it in the browser to dictate.";
+        stopDictation();
+      }
+    };
+    btn.addEventListener("click", () => (dictating ? stopDictation() : startDictation()));
+  }
+
+  function startDictation() {
+    baseText = el("narration-text").value.trim();
+    finalTranscript = "";
+    dictating = true;
+    el("dictate-btn").textContent = "⏹ Stop";
+    el("dictate-btn").classList.add("recording");
+    el("mode-note").textContent = "Listening…";
+    try { recognition.start(); } catch (_) { /* already started */ }
+  }
+
+  function stopDictation() {
+    dictating = false;
+    el("dictate-btn").textContent = "🎤 Dictate";
+    el("dictate-btn").classList.remove("recording");
+    if (el("mode-note").textContent === "Listening…") el("mode-note").textContent = "";
+    try { recognition.stop(); } catch (_) {}
   }
 
   // ---------- legacy flowsheet (always-editable dropdowns) ----------
@@ -59,7 +120,7 @@
         valueTd.classList.remove("charted", "flagged", "traceable");
         valueTd.onclick = null;
         delete valueTd.dataset.quote;
-        recomputeGcsTotal();
+        recomputeTotals();
       });
 
       const meta = document.createElement("span");
@@ -72,6 +133,11 @@
       tr.appendChild(valueTd);
       body.appendChild(tr);
     });
+  }
+
+  function recomputeTotals() {
+    recomputeGcsTotal();
+    recomputeNihssTotal();
   }
 
   function recomputeGcsTotal() {
@@ -89,6 +155,29 @@
       el("gcs-total-note").textContent = "";
       bar.className = "gcs-total-bar";
     }
+  }
+
+  function recomputeNihssTotal() {
+    const filled = NIHSS_FIELDS.map(id => el(`field-${id}`).value).filter(v => v !== "");
+    const bar = el("nihss-total-bar");
+    if (filled.length === 0) {
+      el("nihss-total-value").textContent = "—";
+      el("nihss-total-note").textContent = "";
+      bar.className = "gcs-total-bar";
+      return;
+    }
+    const total = filled.reduce((a, v) => a + Number(v), 0);
+    // NIHSS severity bands (higher = worse), opposite direction to GCS.
+    const band = total <= 4 ? "mild" : total <= 15 ? "moderate" : "severe";
+    const label = total === 0 ? "No stroke symptoms"
+      : total <= 4 ? "Minor"
+      : total <= 15 ? "Moderate"
+      : total <= 20 ? "Moderate–severe" : "Severe";
+    const complete = filled.length === NIHSS_FIELDS.length
+      ? "" : ` · ${filled.length}/${NIHSS_FIELDS.length} items`;
+    el("nihss-total-value").textContent = `${total} / 42`;
+    el("nihss-total-note").textContent = `${label}${complete}`;
+    bar.className = `gcs-total-bar ${band}`;
   }
 
   // ---------- narration panel ----------
@@ -126,7 +215,7 @@
     });
     el("traced-wrap").hidden = true;
     el("traced-narration").innerHTML = "";
-    recomputeGcsTotal();
+    recomputeTotals();
   }
 
   function currentScenarioId() {
@@ -209,7 +298,7 @@
         highlightTrace(u.field_id);
       };
     }
-    if (GCS_FIELDS.includes(u.field_id)) recomputeGcsTotal();
+    recomputeTotals();
   }
 
   function applyFlag(f) {

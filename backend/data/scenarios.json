@@ -10,5 +10,11 @@
     "label": "Ambiguous arousal — Room 418",
     "text": "Neuro check, room 418, oh-two-hundred. She was pretty drowsy when I came in. Eyes were closed — I said her name and she opened them, though honestly she may have been starting to wake up on her own around then, hard to say. Speech was a little thick but she told me her name. Didn't quite track the date. Moved her right arm to my hand but the left just kind of pulled back. Pupils three millimeters, equal, react. No facial droop that I could see. No seizures.",
     "stated_gcs_total": null
+  },
+  {
+    "id": "stroke_nihss",
+    "label": "Stroke alert — NIH Stroke Scale — Bed 3",
+    "text": "Stroke alert, bed 3. Seventy-two-year-old woman, last known well ninety minutes ago, sudden left-sided weakness and facial droop. Running the NIH Stroke Scale now. She's alert and answering. She told me the month and her age, both correct. She opens and closes her eyes on command and grips and releases my hand on command. Her eyes show a partial gaze palsy — she doesn't fully cross midline to the left. Visual fields, she has a complete left homonymous hemianopia. There's a clear left lower facial droop, partial paralysis. Her left arm drifts down before ten seconds. The right arm holds with no drift. Her left leg has some effort against gravity but drops to the bed. The right leg holds. No limb ataxia. Decreased sensation on the left to pinprick, mild to moderate. She has mild expressive aphasia with some word-finding trouble. Her speech is mildly slurred, dysarthria is present but intelligible. And she's ignoring things on her left side — clear left-sided inattention.",
+    "stated_gcs_total": null
   }
 ]

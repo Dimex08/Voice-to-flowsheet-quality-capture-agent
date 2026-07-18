@@ -20,5 +20,22 @@
     "speech":           { "value": "Slurred", "note": "speech a little thick" },
     "strength":         { "value": "Unilateral weakness", "note": "left arm weak relative to right" },
     "seizure_activity": { "value": "None observed", "note": "no seizures" }
+  },
+  "stroke_nihss": {
+    "nihss_1a_loc":       { "value": "0", "note": "alert and answering" },
+    "nihss_1b_questions": { "value": "0", "note": "month and age both correct" },
+    "nihss_1c_commands":  { "value": "0", "note": "eyes + grip both on command" },
+    "nihss_2_gaze":       { "value": "1", "note": "partial gaze palsy" },
+    "nihss_3_visual":     { "value": "2", "note": "complete homonymous hemianopia" },
+    "nihss_4_facial":     { "value": "2", "note": "partial lower-face droop" },
+    "nihss_5a_arm_l":     { "value": "1", "note": "left arm drift" },
+    "nihss_5b_arm_r":     { "value": "0", "note": "right arm holds, no drift" },
+    "nihss_6a_leg_l":     { "value": "2", "note": "some effort against gravity, drops" },
+    "nihss_6b_leg_r":     { "value": "0", "note": "right leg holds" },
+    "nihss_7_ataxia":     { "value": "0", "note": "no limb ataxia" },
+    "nihss_8_sensory":    { "value": "1", "note": "mild-to-moderate sensory loss" },
+    "nihss_9_language":   { "value": "1", "note": "mild expressive aphasia" },
+    "nihss_10_dysarthria":{ "value": "1", "note": "mild slurring, intelligible" },
+    "nihss_11_extinction":{ "value": "1", "note": "left-sided inattention, one modality" }
   }
 }
