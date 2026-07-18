@@ -178,6 +178,44 @@ _MOCK_BY_SCENARIO = {
         "flags": [],
         "stated_gcs_total": None,
     },
+    # Comprehensive case — exercises every field group, varied confidence, a
+    # stated GCS total (for the consistency cross-check), and one genuinely
+    # ambiguous field (limb ataxia untestable in a weak limb) that is flagged
+    # rather than guessed.
+    "comprehensive_stroke": {
+        "updates": [
+            {"field_id": "gcs_eye", "value": "4", "confidence": 0.97, "quote": "Her eyes are open spontaneously"},
+            {"field_id": "gcs_verbal", "value": "4", "confidence": 0.83, "quote": "She's confused — she knew her age but couldn't tell me the month, and her words are jumbled"},
+            {"field_id": "gcs_motor", "value": "6", "confidence": 0.95, "quote": "She does follow commands, squeezed my hand and stuck out her tongue on request"},
+            {"field_id": "pupil_size_mm", "value": "3", "confidence": 0.96, "quote": "Her pupils are three millimeters"},
+            {"field_id": "pupil_reactivity", "value": "Brisk bilaterally", "confidence": 0.93, "quote": "equal and briskly reactive"},
+            {"field_id": "facial_symmetry", "value": "Droop – left", "confidence": 0.94, "quote": "an obvious left facial droop"},
+            {"field_id": "speech", "value": "Aphasic", "confidence": 0.88, "quote": "clear expressive aphasia"},
+            {"field_id": "strength", "value": "Unilateral weakness", "confidence": 0.92, "quote": "Left-sided weakness throughout"},
+            {"field_id": "seizure_activity", "value": "None observed", "confidence": 0.96, "quote": "No seizure activity"},
+            {"field_id": "nihss_1a_loc", "value": "0", "confidence": 0.94, "quote": "Level of consciousness, she's alert"},
+            {"field_id": "nihss_1b_questions", "value": "1", "confidence": 0.86, "quote": "she got her age right but not the month, so one correct"},
+            {"field_id": "nihss_1c_commands", "value": "0", "confidence": 0.93, "quote": "Commands, she did both — eyes and grip"},
+            {"field_id": "nihss_2_gaze", "value": "1", "confidence": 0.88, "quote": "Her gaze shows a partial palsy"},
+            {"field_id": "nihss_3_visual", "value": "2", "confidence": 0.9, "quote": "complete left homonymous hemianopia"},
+            {"field_id": "nihss_4_facial", "value": "2", "confidence": 0.87, "quote": "Facial, partial lower-face droop"},
+            {"field_id": "nihss_5a_arm_l", "value": "2", "confidence": 0.82, "quote": "Left arm, she gets it up but it drifts down with some effort against gravity"},
+            {"field_id": "nihss_5b_arm_r", "value": "0", "confidence": 0.93, "quote": "Right arm holds fine"},
+            {"field_id": "nihss_6a_leg_l", "value": "1", "confidence": 0.83, "quote": "Left leg drifts but keeps some effort"},
+            {"field_id": "nihss_6b_leg_r", "value": "0", "confidence": 0.93, "quote": "Right leg is normal"},
+            {"field_id": "nihss_8_sensory", "value": "1", "confidence": 0.84, "quote": "Sensation is reduced on the left, mild to moderate"},
+            {"field_id": "nihss_9_language", "value": "1", "confidence": 0.84, "quote": "Language, mild to moderate aphasia"},
+            {"field_id": "nihss_10_dysarthria", "value": "1", "confidence": 0.84, "quote": "Her speech is mildly slurred, dysarthria present"},
+            {"field_id": "nihss_11_extinction", "value": "1", "confidence": 0.86, "quote": "she's clearly neglecting her left side, inattention"},
+        ],
+        "flags": [
+            {"field_id": "nihss_7_ataxia",
+             "reason": "Nurse states limb ataxia could not be reliably assessed because of the left-sided weakness, and is unsure whether to score it absent (0) or untestable.",
+             "quote": "I honestly couldn't reliably test for limb ataxia given how weak that side is — not sure whether to call it absent or untestable",
+             "clarifying_question": "NIHSS limb ataxia — since the left side is too weak to test reliably, should this be scored 0 (absent) per the untestable-limb convention, or documented as not assessed?"},
+        ],
+        "stated_gcs_total": 14,
+    },
 }
 
 
