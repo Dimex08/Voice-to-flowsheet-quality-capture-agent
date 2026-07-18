@@ -53,11 +53,6 @@
           <span class="mode-note" id="mode-note"></span>
           <button id="fill-btn" class="primary-btn">Fill flowsheet →</button>
         </div>
-
-        <div id="traced-wrap" hidden>
-          <div class="traced-label">Traceability — click any charted field to see the exact words it came from. Un-highlighted text was not used.</div>
-          <div id="traced-narration" aria-live="polite"></div>
-        </div>
       </div>
 
       <div class="card eval-card" id="eval-card" hidden>
@@ -84,6 +79,12 @@
         <h3>Adversarial checks &amp; flags</h3>
         <div id="consistency-list"></div>
         <div id="flags-list"></div>
+      </div>
+
+      <div class="card traced-card" id="traced-wrap" hidden>
+        <h3>Traceability</h3>
+        <div class="traced-label">Click any charted field to see the exact words it came from. Un-highlighted text was not used.</div>
+        <div id="traced-narration" aria-live="polite"></div>
       </div>
     </aside>
   </div>

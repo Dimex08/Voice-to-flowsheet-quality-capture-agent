@@ -108,7 +108,6 @@ td.field-value.traceable .src { text-decoration: underline dotted #7fae7f; }
 .narration-actions { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
 
 /* traceability view */
-#traced-wrap { margin-top: 12px; border-top: 1px solid #22303c; padding-top: 10px; }
 .traced-label { font-size: 10.5px; color: #6f8189; margin-bottom: 7px; font-family: system-ui, sans-serif; line-height: 1.4; }
 #traced-narration {
   font-size: 12.5px; line-height: 1.7; color: #8fa3ab; font-family: ui-monospace, "SF Mono", monospace;
