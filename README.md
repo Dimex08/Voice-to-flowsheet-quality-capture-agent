@@ -1,23 +1,25 @@
-# CodeScribe — narration → legacy neuro flowsheet, with live eval scoring
+# Voice-to-flowsheet-quality-capture-agent
 
-A legacy nursing flowsheet: Glasgow Coma Scale (Eye/Verbal/Motor), pupils, and
-neuro-exam fields, each a dropdown you can set by hand — the "old system." A
-separate agent (Claude) reads a nurse's pasted narration and fills those dropdowns
-for you, then scores the result on three axes of documentation quality:
-**completeness**, **correctness**, and **currency** (framework mirrors PMID 37740937).
+This project focuses on improving nursing workflow through a voice-to-workflow system that also tracks data quality measures for clinical documentation.
 
-The point of contrast: the flowsheet is fully usable by hand (that's the legacy
-baseline), and the agent is a drop-in that populates it from free text in seconds.
+## Project overview
 
-Where the narration is genuinely ambiguous — e.g. "I said her name and she opened
-her eyes, though she may have been waking on her own" — the agent does **not**
-guess the GCS eye score. It leaves the field blank and drafts the exact clarifying
-question a data manager would need answered. That trades a little completeness to
-protect correctness, and the scorecard shows the tradeoff directly.
+We are developing a potentially scalable system that captures ambient clinical information, maps it to nursing flowsheet assessments, and evaluates the quality of that documentation in real time. The goal is to improve how nurses document at the point of care while also monitoring the completeness, correctness, and currency of the mapped observations.
 
-An independent, deterministic **consistency check** re-verifies the agent's own
-output — e.g. it recomputes GCS Eye+Verbal+Motor and confirms the sum matches the
-overall Glasgow score the nurse stated aloud.
+## Problem statement
+
+Evidence suggests that electronic health record (EHR) user interface features influence the quality of clinical data capture. Nurses typically document in a flowsheet, which is a structured template used for entering bedside clinical assessments. Because this workflow often requires manual clicks and navigation, it may not support real-time documentation. Delayed documentation can reduce recall and negatively affect the completeness, correctness, and currency of nursing assessments.
+
+## Proposed solution
+
+This system aims to reduce documentation burden by using voice-based capture of clinical information and mapping that information to the appropriate flowsheet assessment. In addition, it will track data quality measures so that the capture process can be improved over time.
+
+## Goals
+
+- Improve nursing workflow efficiency at the bedside
+- Support real-time or near real-time documentation
+- Enhance the completeness, correctness, and currency of flowsheet data
+- Create a scalable approach for ambient clinical documentation that is adaptable to legacy systems and data quality monitoring
 
 ## Run it
 
@@ -39,29 +41,23 @@ clarifying questions. You can also change any dropdown by hand at any time.
 With no `ANTHROPIC_API_KEY` set, the app runs in **mock mode**: the two built-in
 sample narrations return scripted agent responses (clearly labeled MOCK AGENT in
 the UI), so the whole pipeline is demoable before the key is wired in. Set the key
-to run the real Claude agent — then it works on arbitrary pasted text, not just the
-samples.
+to run the real agent — then it works on arbitrary text, not just the samples.
 
 ## How it works
 
 - `backend/data/scenarios.json` — the sample narrations (input text only).
 - `backend/data/ground_truth.json` — the answer key per scenario (kept server-side;
   used only to score, never shipped to the flowsheet).
-- `backend/schema.py` — the legacy flowsheet's field registry: which dropdowns
-  exist and their allowed options.
+- `backend/schema.py` — the flowsheet's field registry: which dropdowns exist and
+  their allowed options.
 - `backend/agent.py` — the extraction agent. Sends the narration to Claude with a
   structured tool that either charts a field or flags it with a clarifying
   question; falls back to scripted mock responses when there's no API key. Also
-  holds `check_consistency`, the deterministic adversarial re-check.
+  holds `check_consistency`, the deterministic re-check of the agent's own output
+  (e.g. recomputes GCS Eye+Verbal+Motor and confirms the sum matches the stated
+  Glasgow total).
 - `backend/eval.py` — scores a fill on completeness / correctness / currency.
 - `backend/main.py` — FastAPI: serves the flowsheet and the `POST /api/fill`
   endpoint (narration in → updates + flags + consistency + eval out).
-- `frontend/` — plain HTML/JS/CSS (no build step): the legacy dropdown flowsheet on
-  the left, the narration box + scorecard + flags panel on the right.
-
-## Known scope cut
-
-Speech-to-text isn't wired in (this machine has no ffmpeg/Whisper), so the input is
-transcribed narration text rather than live audio. Swapping in real STT means
-feeding its transcript into the same `POST /api/fill` — the agent and eval
-downstream don't change.
+- `frontend/` — the flowsheet UI: dropdown fields on the left, the input box +
+  quality scorecard + flags panel on the right.
