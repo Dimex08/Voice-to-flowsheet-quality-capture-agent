@@ -12,7 +12,7 @@ Evidence suggests that electronic health record (EHR) user interface features in
 
 ## Proposed solution
 
-This system aims to reduce documentation burden by using voice-based capture of clinical information and mapping that information to the appropriate flowsheet assessment. In addition, it will track data quality measures so that the capture process can be improved over time.
+This system aims to reduce documentation burden by using voice-based capture of clinical information and mapping that information to the appropriate flowsheet assessment. In addition, it will track data quality measures (completeness, correctness, currency) so that the capture process can be improved over time.
 
 ## Goals
 
